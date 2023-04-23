@@ -9,10 +9,43 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ServiceRepository;
+use App\Entity\PdfGeneratorService;
 
 #[Route('/service')]
 class ServiceController extends AbstractController
 {
+
+    #[Route('/pdf', name: 'generator_service3')]
+    public function pdfService(EntityManagerInterface $entityManager): Response
+{ 
+    $services = $entityManager->getRepository(Service::class)
+        ->findAll();
+
+    $html = $this->renderView('pdf/index.html.twig', ['services' => $services]);
+    $pdfGeneratorService = new PdfGeneratorService();
+    $pdf = $pdfGeneratorService->generatePdf($html);
+
+    return new Response($pdf, 200, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="document.pdf"',
+    ]);
+}
+
+    #[Route('/show_in_map/{idService}', name: 'app_service_map', methods: ['GET'])]
+    public function Map( Service $id,EntityManagerInterface $entityManager ): Response
+    {
+
+        $id = $entityManager
+            ->getRepository(Service::class)->findBy( 
+                ['idService'=>$id ]
+            );
+        return $this->render('service/api_arcgis.html.twig', [
+            'services' => $id,
+        ]);
+    }
+
+
     #[Route('/', name: 'app_service_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -21,6 +54,70 @@ class ServiceController extends AbstractController
             ->findAll();
 
         return $this->render('service/index.html.twig', [
+            'services' => $services,
+        ]);
+    }
+
+
+    #[Route('/back', name: 'app_service_indexback', methods: ['GET','POST'])]
+    public function back(EntityManagerInterface $entityManager, ServiceRepository $ServiceRepository, Request $request): Response
+    {
+        $services = $entityManager
+            ->getRepository(Service::class)
+            ->findAll();
+
+            ////////
+        $back = null;
+        
+        if($request->isMethod("POST")){
+            if ( $request->request->get('optionsRadios')){
+                $SortKey = $request->request->get('optionsRadios');
+                switch ($SortKey){
+                    case 'titreService':
+                        $services = $ServiceRepository->SortBytitreService();
+                        break;
+
+                    case 'descriptionService':
+                        $services = $ServiceRepository->SortBydescriptionService();
+                        break;
+
+                    case 'lieuService':
+                        $services = $ServiceRepository->SortBylieuService();
+                        break;
+
+
+                }
+            }
+            else
+            {
+                $type = $request->request->get('optionsearch');
+                $value = $request->request->get('Search');
+                switch ($type){
+                    case 'titreService':
+                        $services = $ServiceRepository->findBytitreService($value);
+                        break;
+
+                    case 'descriptionService':
+                        $services = $ServiceRepository->findBydescriptionService($value);
+                        break;
+
+                    case 'lieuService':
+                        $services = $ServiceRepository->findBylieuService($value);
+                        break;
+
+
+                }
+            }
+
+            if ( $services){
+                $back = "success";
+            }else{
+                $back = "failure";
+            }
+        }
+            ////////
+
+        return $this->render('service/indexback.html.twig', [
             'services' => $services,
         ]);
     }
@@ -37,7 +134,7 @@ class ServiceController extends AbstractController
             $titre = $service->getTitreService();
             $description = $service->getDescriptionService();
             $lieu = $service->getLieuService();
-            $maxLength = 10;
+            $maxLength = 50;
 
             if (strlen($type) > $maxLength || strlen($titre) > $maxLength || strlen($description) > $maxLength || strlen($lieu) > $maxLength) {
                 $this->addFlash('error', 'La longueur maximale autorisée est de '.$maxLength.' caracterisé pour les champs Type, Titre, Description et Lieu.');
