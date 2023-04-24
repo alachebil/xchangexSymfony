@@ -1,0 +1,39 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Livreur{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_livreur_index') }}"class="btn btn-info rounded-pill m-2" ><i class="fa fa-arrow-left" ></i></a>
+
+    <h1>Livreur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdLivr</th>
+                <td>{{ livreur.idLivr }}</td>
+            </tr>
+            <tr>
+                <th>Num</th>
+                <td>{{ livreur.num }}</td>
+            </tr>
+            <tr>
+                <th>NomLiv</th>
+                <td>{{ livreur.nomLiv }}</td>
+            </tr>
+            <tr>
+                <th>PrenomLiv</th>
+                <td>{{ livreur.prenomLiv }}</td>
+            </tr>
+            <tr>
+                <th>Localisation</th>
+                <td>{{ livreur.localisation }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('app_livreur_edit', {'idLivr': livreur.idLivr}) }}"class="btn btn-info rounded-pill m-2" ><i class="fas fa-edit"></i></a>
+
+    {{ include('livreur/_delete_form.html.twig') }}
+{% endblock %}

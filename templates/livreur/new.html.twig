@@ -1,0 +1,16 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}New Livreur{% endblock %}
+
+{% block body %}
+
+    <a href="{{ path('app_livreur_index') }}"class="btn btn-info rounded-pill m-2" ><i class="fa fa-arrow-left" ></i></a>
+    <h1>Create new Livreur</h1>
+
+    
+    {{ include('livreur/_form.html.twig') }}
+    {% if sms_response  %}
+							<div>{{ sms_response }}</div>
+						{% endif %}
+
+{% endblock %}

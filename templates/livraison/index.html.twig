@@ -1,0 +1,113 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Livraison index{% endblock %}
+
+{% block body %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                </ol>
+            </nav>
+        </div>
+    <div class="row ">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div style="display: flex">
+                        <div class="col-md-5">
+                        </div>
+                        <form method="post" class="forms-sample" style="margin-left: -42px" >
+                            <div class="form-group col-md-4" style="display: flex; width: 100%!important; margin: 0px!important;">
+
+                                <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="type">type</label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" style="width: 86px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="adress" >adress</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label" style="width: 86px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="produit" >produit</label>
+                                </div>
+
+                                <button type="Submit" class="btn btn-success btn-fw" style="margin: auto; ">Sort</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+<ul class="navbar-nav w-100" style="margin-top: 18px;">
+                        <li class="nav-item w-100">
+                            <form name="Search-method" id="Search-method"method="post" class="forms-sample" style="display: flex">
+                                <div class="form-group col-md-5">
+                                    <label style="margin-top: 11px;margin-left: 10px;margin-right: 14px;padding-bottom: 7px;;">Option Recherche</label>
+                                    <select name="optionsearch" class="js-example-basic-single" style="width: 200px;height: 38px; color: white; background-color: #191c24; border-radius: 4px;text-align: center;border: 2px solid #0090e7;margin-right: 15px;">
+                                        <option value="">Choisi un Critére</option>
+                                        <option value="typeLiv">type</option>
+                                        <option value="adressLiv">adress</option>
+                                        <option value="produit">produit</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <div class="input-group">
+                                        <input name="Search" type="text" class="form-control" placeholder="Search Livraison" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="Submit">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+    <h1>Livraison index</h1>
+        <div class="row g-4">
+    <div class="col-md-12 ">
+       <div class="bg-light rounded h-100 ">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>DateLiv</th>
+                <th>TypeLiv</th>
+                <th>AdressLiv</th>
+                <th>Produit</th>
+                <th>Email_Client</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+               <tbody id="myTable">
+        
+        
+        {% for livraison in livraisons %}
+            <tr>
+                <td>{{ livraison.id }}</td>
+                <td>{{ livraison.dateLiv ? livraison.dateLiv|date('Y-m-d') : '' }}</td>
+                <td>{{ livraison.typeLiv }}</td>
+                <td>{{ livraison.adressLiv }}</td>
+                <td>{{ livraison.produit }}</td>
+                <td>{{ livraison.idClient }}</td>
+                <td>
+                    <a href="{{ path('app_livraison_show', {'id': livraison.id}) }}"class="btn btn-square btn-secondary m-2"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_livraison_edit', {'id': livraison.id}) }}"class="btn btn-info rounded-pill m-2" ><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('app_livraison_map', {'id': livraison.id}) }}" class="btn btn-info rounded-pill m-2" ><i class="fas fa-location-arrow"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        </div>
+    </div>
+    </div>
+<p><a href="{{ path('generator_service3') }}" class="btn btn-primary px-3 py-1">PDF</a></p>
+    <a href="{{ path('app_livraison_new') }}">Create new</a>
+{% endblock %}
