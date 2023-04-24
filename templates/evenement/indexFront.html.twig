@@ -1,0 +1,59 @@
+{% extends 'frontE.html.twig' %}
+
+
+
+{% block body %}
+
+
+    <div class="service">
+        <div class="container">
+            <div class="section-header text-center">
+              <div id="google_translate_element"></div>
+
+                <h4 style="margin-top:50px; margin-bottom:50px;">Liste des Evenements</h4>
+            </div>
+            <div class="row">
+           {% for evenement in evenements %}
+            {% if evenement.nbParticipants > 0 %}
+        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="service-item">
+          <img src="{{ asset('uploads/' ~evenement.imageEvent)}}" style=" width:360px; height:250px; " alt="">
+          <center><h2>{{ evenement.nomEvent }}</h2></center>
+          <p><strong style="color:#696969"> Type:</strong> {{ evenement.typeEvent }}</p>
+          <p><strong style="color:#696969" >Lieu:</strong> {{ evenement.descriptionEvent }}</p>
+          <p><strong style="color:#696969" >Nbr de participants:</strong> {{ evenement.nbParticipants }}</p>
+          <p><strong style="color:#696969">Date de début:</strong> {{ evenement.date ? evenement.date|date('Y-m-d') : '' }}</p>
+         <center> <a href="{{ path('app_participation_new',{'idevent':evenement.idEvent}) }}" class="btn btn-primary">Participer</a></center>
+         <br>
+         <br>
+         {# -------------------------- Share ------------------------------------  #}
+         <div class="sharethis-inline-share-buttons"></div>
+         {# -------------------------- Share ------------------------------------  #}
+
+        </div>
+      </div>  {% endif %}
+      {% else %}
+    <div class="col">
+        <p class="text-center">Aucun événement trouvé.</p>
+    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </div>
+    <br>
+    
+        <center><div class="btn px-10 py-10" {{knp_pagination_render(evenements) }} </div></center>
+
+        {% for key, messages in app.session.flashbag.all() %}
+    {% for message in messages %}
+        <div class="alert alert-{{ key }} my-3" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+{% endblock %}
+               
