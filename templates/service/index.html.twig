@@ -17,6 +17,7 @@
             </tr>
         </thead>
         <tbody>
+        {% set i = 0 %}
         {% for service in services %}
             <tr>
                 <td>{{ service.idService }}</td>
@@ -24,11 +25,15 @@
                 <td>{{ service.typeService }}</td>
                 <td>{{ service.descriptionService }}</td>
                 <td>{{ service.lieuService }}</td>
+                
+                <td style="width:10px"><img src="{{ qrcodes[i]['simple']|raw }}" > </td>
+               
                 <td>
                     <a href="{{ path('app_service_show', {'idService': service.idService}) }}">show</a>
                     <a href="{{ path('app_service_edit', {'idService': service.idService}) }}">edit</a>
                 </td>
             </tr>
+            {% set i = i + 1 %}
         {% else %}
             <tr>
                 <td colspan="6">no records found</td>

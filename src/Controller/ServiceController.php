@@ -4,13 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Service;
 use App\Form\ServiceType;
+use App\Entity\PdfGeneratorService;
+use Endroid\QrCode\Writer\PngWriter;
+use App\Repository\ServiceRepository;
+use Endroid\QrCode\Encoding\Encoding;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ServiceRepository;
-use App\Entity\PdfGeneratorService;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Color\Color;
+
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+
+use Endroid\QrCode\Label\Font\NotoSans;
 
 #[Route('/service')]
 class ServiceController extends AbstractController
@@ -45,20 +55,68 @@ class ServiceController extends AbstractController
         ]);
     }
 
-
+    public function qrcoding($data)
+    {$writer = new PngWriter();
+     $qrCode = QrCode::create($data)
+         ->setEncoding(new Encoding('UTF-8'))
+         ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+         ->setSize(500)
+         ->setMargin(0)
+         ->setForegroundColor(new Color(0, 0, 0))
+         ->setBackgroundColor(new Color(255, 255, 255));
+     $logo = Logo::create('assetF/images/R2.png')
+         ->setResizeToWidth(90);
+     $label = Label::create('')->setFont(new NotoSans(8));
+ 
+     $qrCodes = [];
+     $qrCode->setSize(200)->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 255, 255));
+     $qrCodes['img'] = $writer->write($qrCode, $logo)->getDataUri();
+     $qrCodes['simple'] = $writer->write(
+                             $qrCode,
+                             null,
+                             $label->setText('Simple')
+                         )->getDataUri();
+ 
+     $qrCode->setForegroundColor(new Color(255, 0, 0));
+     $qrCodes['changeColor'] = $writer->write(
+         $qrCode,
+         null,
+         $label->setText('Color Change')
+     )->getDataUri();
+ 
+     $qrCode->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 0, 0));
+     $qrCodes['changeBgColor'] = $writer->write(
+         $qrCode,
+         null,
+         $label->setText('Background Color Change')
+     )->getDataUri();
+ 
+     $qrCode->setSize(200)->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 255, 255));
+     $qrCodes['withImage'] = $writer->write(
+         $qrCode,
+         $logo,
+         $label->setText('Reused')->setFont(new NotoSans(20))
+     )->getDataUri();
+     return $qrCodes;
+ }
+ 
+ 
     #[Route('/', name: 'app_service_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
-    {
+    {$service=new Service();
         $services = $entityManager
             ->getRepository(Service::class)
             ->findAll();
+            foreach($services as $service)
+            {$Qrcodes[]=$this->qrcoding('Titre :' . $service->getTitreService(). '*****   Type :' . $service->getTypeService() . '**** Lieu :
+                ' . $service->getLieuService() );}
 
         return $this->render('service/index.html.twig', [
             'services' => $services,
+            'qrcodes' =>$Qrcodes,
         ]);
     }
-
-
+    
     #[Route('/back', name: 'app_service_indexback', methods: ['GET','POST'])]
     public function back(EntityManagerInterface $entityManager, ServiceRepository $ServiceRepository, Request $request): Response
     {
