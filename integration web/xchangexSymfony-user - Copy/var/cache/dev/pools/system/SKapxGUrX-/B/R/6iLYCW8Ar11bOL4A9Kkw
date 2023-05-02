@@ -1,0 +1,3 @@
+<?php //App%255CEntity%255CParticipation
+
+return [PHP_INT_MAX, []];
