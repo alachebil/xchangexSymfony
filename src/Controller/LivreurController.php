@@ -31,20 +31,23 @@ class LivreurController extends AbstractController
         $livreur = new Livreur();
         $form = $this->createForm(LivreurType::class, $livreur);
         $form->handleRequest($request);
-        $response = null;
+        $response =new  Response();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            $response = $this->forward('App\Controller\SmsController::sendSms');
+
             $entityManager->persist($livreur);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_livreur_index', [], Response::HTTP_SEE_OTHER);
         }
-$response = $this->forward('App\Controller\SmsController::sendSms');
         return $this->renderForm('livreur/new.html.twig', [
+            
             'livreur' => $livreur,
             'form' => $form,
+            // dd('sms_response' => $response->getContent());
             'sms_response' => $response->getContent(),
+            
         ]);
         return $this->renderForm('livreur/new.html.twig', [
             'livreur' => $livreur,

@@ -14,7 +14,7 @@ class SmsController extends AbstractController
         $client = new Client($sid, $token);
 
         $message = $client->messages->create(
-            "+21650988977",
+            "+21694309914",
             [
                 'from' => "+16812069787",
                 'body' => 'Reservation Confirmée'
