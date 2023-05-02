@@ -1,0 +1,38 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Echange{% endblock %}
+
+{% block body %}
+    <h1>Echange</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdEchange</th>
+                <td>{{ echange.idEchange }}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{ echange.username }}</td>
+            </tr>
+            <tr>
+                <th>DateEchange</th>
+                <td>{{  dateString }}</td>
+            </tr>
+            <tr>
+                <th>LieuEchange</th>
+                <td>{{ echange.lieuEchange }}</td>
+            </tr>
+            <tr>
+                <th>TypeEchange</th>
+                <td>{{ echange.typeEchange }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_echange_front') }}">Back to list</a>
+
+    <a href="{{ path('app_echange_editF', {'idEchange': echange.idEchange}) }}">Edit</a>
+
+    {{ include('echange/_deleteF_form.html.twig') }}
+{% endblock %}

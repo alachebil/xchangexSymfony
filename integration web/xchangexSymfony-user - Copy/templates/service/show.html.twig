@@ -1,0 +1,38 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Service{% endblock %}
+
+{% block body %}
+    <h1>Service</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdService</th>
+                <td>{{ service.id }}</td>
+            </tr>
+            <tr>
+                <th>TitreService</th>
+                <td>{{ service.getTitreService() }}</td>
+            </tr>
+            <tr>
+                <th>TypeService</th>
+                <td>{{ service.typeService }}</td>
+            </tr>
+            <tr>
+                <th>DescriptionService</th>
+                <td>{{ service.descriptionService }}</td>
+            </tr>
+            <tr>
+                <th>LieuService</th>
+                <td>{{ service.lieuService }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_service_index') }}">back to list</a>
+
+    <a href="{{ path('app_service_edit', {'idService': service.id}) }}">edit</a>
+
+    {{ include('service/_delete_form.html.twig') }}
+{% endblock %}

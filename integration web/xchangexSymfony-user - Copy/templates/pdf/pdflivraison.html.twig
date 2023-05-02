@@ -1,0 +1,31 @@
+<img src="{{ asset('uploads/logo.png') }}"  style=" width:570px; height:100px;"alt="Description de votre image">
+{% block title %} <style=" width:10px; height:100px;"><h1>LA LISTE DES OFFRES</h1>{% endblock %}
+      <div class="slider-item" style="background-image: url('{{asset('logo.png')}}');"></div>
+<table  border="1">
+        <thead >
+            <tr>
+                <th>Id</th>
+                <th>DateLiv</th>
+                <th>TypeLiv</th>
+                <th>AdressLiv</th>
+                <th>Produit</th>
+                <th>actions</th>
+                 
+         </tr>  
+        </thead>
+            <tbody>
+                        {% for livraison in livraisons %}
+            <tr>
+                <td>{{ livraison.id }}</td>
+                <td>{{ livraison.dateLiv ? livraison.dateLiv|date('Y-m-d') : '' }}</td>
+                <td>{{ livraison.typeLiv }}</td>
+                <td>{{ livraison.adressLiv }}</td>
+                <td>{{ livraison.produit }}</td>
+                <td>
+                    <a href="{{ path('app_livraison_show', {'id': livraison.id}) }}"class="btn btn-square btn-secondary m-2"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_livraison_edit', {'id': livraison.id}) }}"class="btn btn-info rounded-pill m-2" ><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>

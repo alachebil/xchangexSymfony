@@ -21,12 +21,19 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
-
+use Doctrine\Persistence\ManagerRegistry;
 
 
 
 class SecurityController extends AbstractController
 {
+
+    private $managerRegistry;
+
+    public function __construct(ManagerRegistry $managerRegistry)
+    {
+        $this->managerRegistry = $managerRegistry;
+    }
 
     public function sendEmail(MailerInterface $mailer, String $emailTo )
     {
@@ -57,14 +64,34 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
         
             
-        $session = $request->getSession();
-        $session->set('user', $lastUsername);
+       // get the login error if there is one
+       $error = $authenticationUtils->getLastAuthenticationError();
+       // last username entered by the user
+       $lastUsername = $authenticationUtils->getLastUsername();
+       
+
+       // Get the entity manager for the User class using the ManagerRegistry object
+       $entityManager = $this->managerRegistry->getManagerForClass(User::class);
+
+       // Pass the ManagerRegistry object to the UserRepository constructor instead of the EntityManager object
+       $userRepository = new UserRepository($this->managerRegistry);
+
+
+       // Use the returned user object for whatever you need to do in your method
+       
+       $user = $userRepository->findOneByEmail($lastUsername);
+
+       
+       $session = $request->getSession();
+       $session->set('user', $user);
       
         
 
         
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername,
+        'error' => $error,
+        'session' => $session,]);
 
 
        

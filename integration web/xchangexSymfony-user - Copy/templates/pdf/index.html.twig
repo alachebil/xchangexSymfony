@@ -1,0 +1,26 @@
+<img src="{{ asset('uploads/logo.jpg') }}"  style=" width:100px; height:100px;"alt="Description de votre image">
+{% block title %} <style=" width:10px; height:100px;"><h1>La Liste Des Services</h1>{% endblock %}
+      <div class="slider-item" style="background-image: url('{{asset('logo.png')}}');"></div>
+<table  border="1">
+       <thead>
+            <tr>
+               
+                <th>TitreService</th>
+                <th>TypeService</th>
+                <th>DescriptionService</th>
+                <th>LieuService</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for service in services %}
+            <tr>
+                
+                <td>{{ service.titreService }}</td>
+                <td>{{ service.typeService }}</td>
+                <td>{{ service.descriptionService }}</td>
+                <td>{{ service.lieuService }}</td>
+                
+            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>

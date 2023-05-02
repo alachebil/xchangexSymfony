@@ -24,7 +24,7 @@
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
                     <div class="ms-3">
-                        <h6 class="mb-0">Jhon Doe</h6>
+                        <h6 class="mb-0">{{ app.session.get('user').nom }}</h6>
                         <span>Admin</span>
                     </div>
                 </div>
@@ -43,7 +43,14 @@
                     <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
                      <a href="/produit" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Produit</a>
                       <a href="/categorie" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Categorie</a>
-                      <a href="/reduction" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reduction</a>
+                      <a href="/evenement" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Evenement</a>
+                      <a href="/participation" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Participation</a>
+                      <a href="/livreur" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Livreur</a>
+                      <a href="/livraison" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Livraison</a>
+                      <a href="/reductionlivraison" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Reduction</a>
+                      <a href="/service/back" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Service</a>
+                      <a href="/commentaire" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Commentaire</a>
+                      
                       <a href="/admin/dashboard/users/filter" class="nav-item nav-link"><i class="fa fa-table me-2"></i>User</a>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
                     <div class="nav-item dropdown">

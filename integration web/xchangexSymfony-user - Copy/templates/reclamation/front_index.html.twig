@@ -1,0 +1,48 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Reclamation {% endblock %}
+
+{% block body %}
+    <h1>Reclamation : ({{ reclamations.getTotalItemCount }}) </h1>
+
+
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>NomEchange</th>
+                <th>EtatRec</th>
+                <th>DateReclamation</th>
+                <th>ImageEvent</th>
+                <th>DescriptionReclamation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.idEchange }}</td>
+
+                <td>{{ reclamation.etatRec }}</td>
+                <td>{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('Y-m-d H:i:s') : '' }}</td>
+                {#<td>{{ reclamation.imageEvent }}</td>#}
+                <td><img src="{{ asset('uploads/' ~reclamation.imageEvent) }}" style=" width:150px; height:150px; " alt=""/></td>
+                <td>{{ reclamation.descriptionReclamation }}</td>
+                <td>
+                    <a href="{{ path('app_reclamation_showF', {'idReclamation': reclamation.idReclamation}) }}">show</a>
+                    <a href="{{ path('app_reclamation_editF', {'idReclamation': reclamation.idReclamation}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ knp_pagination_render(reclamations) }}
+
+{% endblock %}

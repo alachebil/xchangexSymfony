@@ -77,6 +77,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     public ?bool $isBanned = null;
 
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Participation::class)]
+    private Collection $Participation;
+
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Livraison::class)]
+    private Collection $Livraison;
+
+    public function __construct()
+    {
+        $this->Participation = new ArrayCollection();
+        $this->Livraison = new ArrayCollection();
+    }
+
+
 
     
 
@@ -281,4 +294,71 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Participation>
+     */
+    public function getParticipation(): Collection
+    {
+        return $this->Participation;
+    }
+
+    public function addParticipation(Participation $participation): self
+    {
+        if (!$this->Participation->contains($participation)) {
+            $this->Participation->add($participation);
+            $participation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipation(Participation $participation): self
+    {
+        if ($this->Participation->removeElement($participation)) {
+            // set the owning side to null (unless already changed)
+            if ($participation->getUser() === $this) {
+                $participation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
+    public function __toString()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return Collection<int, Livraison>
+     */
+    public function getLivraison(): Collection
+    {
+        return $this->Livraison;
+    }
+
+    public function addLivraison(Livraison $livraison): self
+    {
+        if (!$this->Livraison->contains($livraison)) {
+            $this->Livraison->add($livraison);
+            $livraison->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLivraison(Livraison $livraison): self
+    {
+        if ($this->Livraison->removeElement($livraison)) {
+            // set the owning side to null (unless already changed)
+            if ($livraison->getUser() === $this) {
+                $livraison->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
