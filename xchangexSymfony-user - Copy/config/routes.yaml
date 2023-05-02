@@ -1,0 +1,34 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+
+# routes for client
+#client_dashboard:
+ #   path: /home
+  #  controller: App\Controller\HomeController::index
+
+# routes for admin
+#admin_dashboard:
+ #   path: /dashboard/users
+ #   controller: App\Controller\UserController::Show
+
+# routes for coach
+#coach_dashboard:
+ #   path: /coach/{id}/dashboard
+  #  controller: App\Controller\CoachController::dashboard
+
+# routes for reclamation
+#index:
+#    path: /reclamation/front
+#    controller: App\Controller\ReclamationController::index
+
+# routes for echange
+#index:
+#    path: /echange/front
+#    controller: App\Controller\EchangeController::index
+
+# routes for Sms
+#send_sms:
+    #path: /send-sms
+    #controller: App\Controller\SmsController::sendSms

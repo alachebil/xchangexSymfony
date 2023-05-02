@@ -1,0 +1,52 @@
+{% extends 'basefront.html.twig' %}
+
+
+{% block title %}Echange {% endblock %}
+
+{% block body %}
+{% for message in app.flashes('notification') %}
+        <div class="alert alert-info alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+    {% endfor %}    
+    <h1>Echange: ({{ echanges.getTotalItemCount }}) </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                {#<th>IdEchange</th>#}
+                <th>Username</th>
+                <th>DateEchange</th>
+                <th>LieuEchange</th>
+                <th>TypeEchange</th>
+                <th>Actions</th> 
+            </tr>
+        </thead>
+        <tbody>
+        {% for echange in echanges %}
+            <tr>
+                {#<td>{{ echange.idEchange }}</td>#}
+                <td>{{ echange.username }}</td>
+                <td>{{ echange.dateEchange }}</td>
+                <td>{{ echange.lieuEchange }}</td>
+                <td>{{ echange.typeEchange }}</td>
+                <td>
+                    <a href="{{ path('app_echange_showF', {'idEchange': echange.idEchange}) }}">show</a>
+                    <a href="{{ path('app_echange_editF', {'idEchange': echange.idEchange}) }}">edit</a>
+                    <center><a href="{{ path('update_note') }}">Raaa</a></center>
+                    <center> <a href="{{ path('app_reclamation_new',{'idEchan':echange.idEchange}) }}" class="btn btn-primary">Reclamer</a></center>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {{ knp_pagination_render(echanges) }}
+
+    <a href="{{ path('app_echange_newF') }}">Create new</a>
+{% endblock %}

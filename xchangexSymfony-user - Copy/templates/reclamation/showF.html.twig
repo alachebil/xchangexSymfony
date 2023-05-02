@@ -1,0 +1,42 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Reclamation{% endblock %}
+
+{% block body %}
+    <h1>Reclamation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdReclamation</th>
+                <td>{{ reclamation.idReclamation }}</td>
+            </tr>
+            
+            <tr>
+                <th>Gravité</th>
+                <td>{{ reclamation.note }}</td>
+            </tr>
+            <tr>
+                <th>EtatRec</th>
+                <td>{{ reclamation.etatRec }}</td>
+            </tr>
+            <tr>
+                <th>DateReclamation</th>
+                <td>{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ImageEvent</th>
+                <td><img src="{{ asset('uploads/' ~reclamation.imageEvent) }}" style=" width:150px; height:150px; " alt=""/></td>
+            </tr>
+                <th>DescriptionReclamation</th>
+                <td>{{ reclamation.descriptionReclamation }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reclamation_front') }}">back to list</a>
+
+    <a href="{{ path('app_reclamation_editF', {'idReclamation': reclamation.idReclamation}) }}">edit</a>
+
+    {{ include('reclamation/_deleteF_form.html.twig') }}
+{% endblock %}

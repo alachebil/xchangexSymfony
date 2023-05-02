@@ -1,0 +1,23 @@
+<div class="pagination-container">
+    {% if pageCount > 1 %}
+        <ul class="pagination">
+            {% if currentPage != 1 %}
+                <li><a href="{{ path(route, query|merge({'page': 1})) }}">First</a></li>
+            {% endif %}
+
+            {% if currentPage > 2 %}
+                <li><a href="{{ path(route, query|merge({'page': currentPage - 1})) }}">{{ currentPage - 1 }}</a></li>
+            {% endif %}
+
+            <li class="active"><a href="#">{{ currentPage }}</a></li>
+
+            {% if currentPage < pageCount - 1 %}
+                <li><a href="{{ path(route, query|merge({'page': currentPage + 1})) }}">{{ currentPage + 1 }}</a></li>
+            {% endif %}
+
+            {% if currentPage != pageCount %}
+                <li><a href="{{ path(route, query|merge({'page': pageCount})) }}">Last</a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</div>
